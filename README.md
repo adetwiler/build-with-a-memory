@@ -43,6 +43,10 @@ You do not adopt ten pillars on a Tuesday. You start with one file, one record, 
 
 Do that for a month. The context file grows into a network. The decisions grow into a cache. You will feel the review get cheaper before you can explain why.
 
+## Follow along
+
+I write about this in public as I go. The devlog lives in [`posts/`](posts/) and is subscribable by RSS: point your reader at `feed.xml`. Posts land after a daily human review, so the feed is a considered record, not a firehose.
+
 ## License
 
 Dual license, both permissive:
