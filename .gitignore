@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Editor cruft
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Node, in case a template gains a helper later
+node_modules/
+npm-debug.log*
