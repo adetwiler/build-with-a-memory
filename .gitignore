@@ -15,3 +15,6 @@
 # Node, in case a template gains a helper later
 node_modules/
 npm-debug.log*
+
+# The real denylist is machine-local: your list of secrets is itself a secret.
+.githooks/denylist.local
