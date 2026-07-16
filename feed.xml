@@ -2,14 +2,14 @@
 <rss version="2.0">
   <channel>
     <title>Build With a Memory</title>
-    <link>https://github.com/adetwiler/build-with-a-memory/blob/main</link>
+    <link>https://buildwithamemory.com</link>
     <description>A working developer&apos;s devlog on building with AI coding agents: committed markdown memory networks and a self-improving loop.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 16 Jul 2026 04:26:42 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 16 Jul 2026 15:33:52 GMT</lastBuildDate>
     <item>
       <title>Why this repo exists</title>
-      <link>https://github.com/adetwiler/build-with-a-memory/blob/main/posts/2026-07-12-why-this-repo-exists.md</link>
-      <guid isPermaLink="true">https://github.com/adetwiler/build-with-a-memory/blob/main/posts/2026-07-12-why-this-repo-exists.md</guid>
+      <link>https://buildwithamemory.com/posts/2026-07-12-why-this-repo-exists.md</link>
+      <guid isPermaLink="true">https://buildwithamemory.com/posts/2026-07-12-why-this-repo-exists.md</guid>
       <pubDate>Sun, 12 Jul 2026 00:00:00 GMT</pubDate>
       <description>Every AI session starts from nothing. This is the way of working that stopped me from losing the same context over and over.</description>
     </item>

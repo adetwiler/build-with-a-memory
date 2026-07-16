@@ -17,7 +17,7 @@ import { fileURLToPath } from 'node:url';
 // the GitHub blob view of the repo, which renders each post's markdown and
 // resolves the moment the repo is public. Swap it for buildwithamemory.com (or a
 // GitHub Pages URL) if the devlog later gets a dedicated home. No trailing slash.
-const FEED_BASE_URL = 'https://github.com/adetwiler/build-with-a-memory/blob/main';
+const FEED_BASE_URL = 'https://buildwithamemory.com';
 
 const CHANNEL_TITLE = 'Build With a Memory';
 const CHANNEL_DESCRIPTION =
