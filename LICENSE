@@ -1,6 +1,15 @@
 # License
 
-This repository is dual licensed.
+This repository is multi licensed. The one thing you are told to copy, the
+prompt, is public domain so there is nothing to think about.
+
+## The prompt (CC0 1.0, public domain)
+
+`prompt.txt` (and the identical prompt shown in `README.md`) is released under
+CC0 1.0. It is the hero artifact and it is meant to be copied. Paste it, change
+it, ship it in your own tool, no attribution and no permission needed.
+
+Full text: https://creativecommons.org/publicdomain/zero/1.0/
 
 ## Templates and code (MIT)
 
@@ -32,8 +41,9 @@ SOFTWARE.
 
 ## Method documentation (CC-BY-4.0)
 
-The written method (`README.md`, everything under `method/` and `research/`, and
-the ADR under `docs/adr/`) is released under the Creative Commons Attribution 4.0
+The written method (`README.md`, `THE-METHOD.md`, everything under `method/`,
+`research/`, and `posts/`, the generated `feed.xml`, and the ADR under
+`docs/adr/`) is released under the Creative Commons Attribution 4.0
 International License. You may share and adapt it, including commercially, as long
 as you give appropriate credit.
 

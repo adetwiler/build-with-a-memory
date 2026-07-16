@@ -13,11 +13,11 @@ import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// OWNER: set this to the public base URL when the repo goes public (for example
-// the GitHub Pages URL for the repo, like https://<user>.github.io/build-with-a-memory).
-// It is the <link> for the channel and the base for each item's link/guid. Left
-// as a placeholder until then. No trailing slash.
-const FEED_BASE_URL = 'https://example.invalid/build-with-a-memory';
+// OWNER: base URL for the channel <link> and each item's link/guid. Points at
+// the GitHub blob view of the repo, which renders each post's markdown and
+// resolves the moment the repo is public. Swap it for buildwithamemory.com (or a
+// GitHub Pages URL) if the devlog later gets a dedicated home. No trailing slash.
+const FEED_BASE_URL = 'https://github.com/adetwiler/build-with-a-memory/blob/main';
 
 const CHANNEL_TITLE = 'Build With a Memory';
 const CHANNEL_DESCRIPTION =
@@ -87,8 +87,8 @@ for (const file of files) {
     console.error(`Skipping ${file}: unparseable date "${data.date}".`);
     continue;
   }
-  const slug = file.replace(/\.md$/, '');
-  const link = `${FEED_BASE_URL}/posts/${slug}`;
+  // Keep the .md so the GitHub blob view resolves the file directly.
+  const link = `${FEED_BASE_URL}/posts/${file}`;
   items.push({ ...data, pubDate, link });
 }
 

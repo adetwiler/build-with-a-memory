@@ -2,7 +2,7 @@
 
 > New here? Start with the [README](README.md) and the one-paste prompt. This file is the deeper version: how I actually run this across my own projects once the one-paste setup is in place.
 
-Every AI coding session wakes up with amnesia. It has no idea what you decided last week, why you named things the way you did, or which approach you already tried and threw away. So you re-explain. Every time. The agent re-derives context you paid for once, gets it slightly wrong, and you review the same ground again.
+Your AI coding agent forgets everything between sessions. It has no idea what you decided last week, why you named things the way you did, or which approach you already tried and threw away. So you re-explain. Every time. The agent re-derives context you paid for once, gets it slightly wrong, and you review the same ground again.
 
 The fix is not a bigger model or a smarter prompt. It is a place to remember.
 
@@ -12,9 +12,9 @@ This is the method I use to build with AI agents. I am an indie developer. I mak
 
 ## Why this is the anti-product
 
-There is no SaaS here. No hosted memory. No lock-in. The whole point is that your context lives in your repo as plain files you own. If a tool wants to store your project's memory on their servers behind an API, they have made your memory their product. This makes it yours.
+There is no SaaS here. No hosted memory. No lock-in. The whole point is that your context lives in your repo as plain files you own. If a tool keeps your project's memory on its servers behind an API, your memory is part of its product. Here the files stay in your repo, so they stay yours.
 
-I would rather show you the method and have you keep the files than sell you a subscription to your own context.
+I would rather show you the method and let you keep the files than run a service you have to pay for every month.
 
 ## The ten pillars
 
@@ -35,15 +35,15 @@ Read the ones you need. Start with the first, then the seventh (that one is the 
 
 ## Quick start
 
-You do not adopt ten pillars on a Tuesday. You start with one file, one record, one rule.
+You do not need all ten at once. You start with one file, one record, one rule.
 
 1. **One context file.** Make a `CONTEXT.md` in your repo. Put the glossary in it: the five or ten terms that mean something specific in your project, each with one line. That is it. Next session, tell your agent to read it first. See [templates/CONTEXT.md](templates/CONTEXT.md).
 
 2. **One decision record.** Next time you make a call you might second-guess later (a library choice, a schema shape, a "we will not do X" line), write it down: the decision, the date, the alternatives it beat, the consequence you accept. One short file in `docs/adr/`. See [templates/adr-template.md](templates/adr-template.md).
 
-3. **One rule.** When you lose an hour to something (a config that fought you, a race you did not see, a limit you hit), turn that hour into three lines written where the next session will find them. An hour lost becomes three lines saved. That is the whole loop.
+3. **One rule.** When you lose an hour to something (a config that fought you, a race you did not see, a limit you hit), turn that hour into three lines written where the next session will find them.
 
-Do that for a month. The context file grows into a network. The decisions grow into a cache. You will feel the review get cheaper before you can explain why.
+Do that for a month. The context file grows as you add terms. The decisions add up. The review gets cheaper as they do, because the agent stops re-deriving what you already settled.
 
 ## Follow along
 
@@ -51,10 +51,11 @@ I write about this in public as I go. The devlog lives in [`posts/`](posts/) and
 
 ## License
 
-Dual license, both permissive:
+Everything here is permissive:
 
+- The **prompt** (`prompt.txt`) is CC0, public domain. Copy it anywhere, no attribution needed.
 - The **templates** (everything in `templates/`, the hooks, the scripts) are MIT. Copy them into your work, commercial or not, no attribution required.
-- The **method docs** (`README.md`, `method/`, `research/`, the ADR) are CC-BY-4.0. Share and adapt them, just credit the source.
+- The **method docs** (`README.md`, this file, `method/`, `research/`, `posts/`, the ADR) are CC-BY-4.0. Share and adapt them, just credit the source.
 
 See [LICENSE](LICENSE) for the exact terms.
 
