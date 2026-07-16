@@ -69,3 +69,5 @@ It is a prompt, not a program. Your agent follows it, so check the short report 
 ## License
 
 Everything here is permissive. The prompt ([prompt.txt](prompt.txt)) is CC0: it is the hero, copy it anywhere, no credit needed. The templates, hooks, and scripts are MIT. The written method (this README, [THE-METHOD.md](THE-METHOD.md), and the `method/`, `research/`, and `posts/` folders) is CC-BY-4.0: share and adapt it, just credit the source. See [LICENSE](LICENSE).
+
+Where this method borrows an idea from someone else, it is credited in [CREDITS.md](CREDITS.md).

@@ -57,7 +57,7 @@ Everything here is permissive:
 - The **templates** (everything in `templates/`, the hooks, the scripts) are MIT. Copy them into your work, commercial or not, no attribution required.
 - The **method docs** (`README.md`, this file, `method/`, `research/`, `posts/`, the ADR) are CC-BY-4.0. Share and adapt them, just credit the source.
 
-See [LICENSE](LICENSE) for the exact terms.
+See [LICENSE](LICENSE) for the exact terms. Where this method borrows an idea from someone else, it is credited in [CREDITS.md](CREDITS.md).
 
 ## Contributing
 

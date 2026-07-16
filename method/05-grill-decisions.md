@@ -38,6 +38,10 @@ Your call?
 - **You rubber-stamp the recommended answers.** The recommendation is a starting point, not a verdict. If you never override one, you are not really being grilled.
 - **Decisions never get recorded.** A grilling that does not end in ADRs is a conversation you will have again. The write-down is the deliverable.
 
+## Where this came from
+
+The interview-instead-of-agree shape here is adapted from Matt Pocock's `grill-with-docs` skill, reshaped to fit how I build. Full credit and what I changed: [CREDITS.md](../CREDITS.md).
+
 ## What it costs honestly
 
 It is uncomfortable, and it is slower up front. Being questioned about a plan you were excited to start is not fun, and a good grilling will occasionally show you that your idea has a hole you cannot fill yet. That sting is the cost. The return is that the holes show up in a conversation instead of in a half-built feature. You spend words now so you do not spend days later.
