@@ -29,6 +29,11 @@ Posts land after a daily human review. Write the file, commit it, and it goes
 into the feed on the next reviewed pass. There is no auto-publish: a person reads
 it first.
 
+Drafts stage outside `posts/`. A file in this folder is expected to be in the
+feed, so the release check fails on a draft sitting here with a stale
+`feed.xml`. Keep work-in-progress elsewhere and move it in when it's ready to
+ship (regenerating the feed in the same pass).
+
 ## The feed
 
 `scripts/make-feed.mjs` reads every `posts/*.md`, sorts newest first, and writes
