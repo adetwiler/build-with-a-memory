@@ -61,4 +61,4 @@ See [LICENSE](LICENSE) for the exact terms.
 
 ## Contributing
 
-If you scrub before you share, share. This repo carries two mechanical gates that run before anything ships: a pre-commit hook (see `.githooks/`) and a full-tree audit (`scripts/leak-audit.sh`). Run the audit before you publish anything derived from a private project. The gates exist because I move private context around all day and I do not trust myself to catch every leak by eye.
+If you scrub before you share, share. This repo carries mechanical gates that run before anything ships: a pre-commit hook (see `.githooks/`) that blocks leaks, banned dashes, and a drifted prompt on every commit, and a full release check (`scripts/release-check.sh`) that audits the whole tree at once: the leak scan (`scripts/leak-audit.sh`), the dash scan, prompt sync, dead links, and feed freshness. Run the release check before you publish anything derived from a private project. The gates exist because I move private context around all day and I do not trust myself to catch every leak, or every stale claim, by eye.

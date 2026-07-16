@@ -92,6 +92,23 @@ if [ -n "$bleed_hits" ]; then
   fail=1
 fi
 
+# --- Gate (c): prompt sync (accuracy) ---
+# The hero prompt lives in two places: embedded in README.md and raw in
+# prompt.txt. If this commit touches either, the STAGED copies must be
+# byte-identical. Compares staged content (git show :path), not the working
+# tree, so what is checked is exactly what would land.
+if git diff --cached --name-only | grep -qE '^(README\.md|prompt\.txt)$'; then
+  staged_readme_prompt="$(git show :README.md 2>/dev/null | awk '/^```$/{if(inblk){exit}} /^```/{inblk=1;next} inblk{print}')"
+  staged_prompt="$(git show :prompt.txt 2>/dev/null)"
+  if [ "$staged_readme_prompt" != "$staged_prompt" ]; then
+    echo "BLOCKED: README.md's embedded prompt and prompt.txt would land out of sync."
+    echo "Edit one, mirror the other, re-stage both. scripts/release-check.sh"
+    echo "shows the diff. Two drifting copies of the hero prompt is the most"
+    echo "embarrassing inaccuracy this repo could ship."
+    fail=1
+  fi
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo ""
   echo "Commit rejected. Fix the lines above and re-commit."

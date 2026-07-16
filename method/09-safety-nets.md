@@ -18,7 +18,7 @@ Two checks worth the trouble illustrate the pattern. This very repo has a pre-co
 
 1. When something bites you, fix it, then immediately ask: what would have caught this automatically? Build that.
 2. Write the lesson as a short line where the relevant work happens (the topic doc, the manual's rule block if it is load-bearing).
-3. Add the check to a place that runs on its own: a pre-commit hook, a CI step, a startup guard, a test. See `.githooks/pre-commit` and `scripts/leak-audit.sh` in this repo for two working examples.
+3. Add the check to a place that runs on its own: a pre-commit hook, a CI step, a startup guard, a test. See `.githooks/pre-commit`, `scripts/leak-audit.sh`, and `scripts/release-check.sh` in this repo for working examples: per-commit gates for the mistakes that arrive one line at a time, and a whole-tree release check for the moment the stakes jump.
 4. Make the check's message name the failure clearly, so when it fires, the person understands what they almost did and why the guard is there.
 
 Minimal example of a guard's error message:
