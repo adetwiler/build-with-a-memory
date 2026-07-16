@@ -84,8 +84,10 @@ if [ -n "$dead_links" ]; then
 fi
 
 # --- 5. Feed freshness -------------------------------------------------------
+# README.md is excluded to mirror make-feed.mjs: it is folder documentation,
+# not a post, so editing it must not demand a feed rebuild.
 if [ -d posts ] && [ -f feed.xml ]; then
-  newest_post="$(ls -t posts/*.md 2>/dev/null | head -1 || true)"
+  newest_post="$(ls -t posts/*.md 2>/dev/null | grep -v '/README\.md$' | head -1 || true)"
   if [ -n "$newest_post" ] && [ "$newest_post" -nt feed.xml ]; then
     say_fail "feed.xml is older than $newest_post (run: node scripts/make-feed.mjs)"
   fi
