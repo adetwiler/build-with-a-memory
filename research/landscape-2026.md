@@ -39,11 +39,15 @@ not a service it calls.
   steering purely by chat. Different emphasis (specs and plans over glossary and
   decisions) but the same move of putting the durable intent in the repo.
   https://github.com/github/spec-kit
-- **Other repo-memory projects** in the same space (for example projects
-  published under names like "ProjectMEM" and "RepoMemory") explore committing an
-  agent's working memory into the repository. The space was active and moving in
+- **Other repo-memory projects** in the same space explore committing an agent's
+  working memory into the repository as version-controlled files. **gitagent**
+  frames the whole agent (identity, rules, and a `memory/` history) as
+  git-committed files you can fork, branch, and `git log`:
+  https://github.com/open-gitagent/gitagent. **ai-memory** keeps a long-term
+  memory wiki as "plain markdown in a git repo" so a session can hand off between
+  agent CLIs without re-explaining the architecture:
+  https://github.com/akitaonrails/ai-memory. The space was active and moving in
   2026; treat any single project's specifics as a snapshot.
-  <!-- OWNER: confirm exact project names/links before publishing if you want them cited by name -->
 
 **Where this method differs from the neighbors.** Two things. First, the *wide*
 network: a personal cross-project layer linked to the repo networks by pointer,
@@ -62,8 +66,10 @@ and these are real, useful tools for people who want that trade.
   agents/apps: https://github.com/mem0ai/mem0
 - **Zep**, a memory service for agent applications:
   https://www.getzep.com/ and https://github.com/getzep
+- **Forgetful**, a self-hosted memory server (Model Context Protocol) that gives
+  agents persistent, semantic memory storage and retrieval:
+  https://github.com/ScottRBK/forgetful
 - Other hosted memory layers marketed through 2026 make similar offers.
-  <!-- OWNER: confirm current names/links (e.g. "Forgetful") before citing by name -->
 
 The tradeoff is real and worth stating plainly rather than dismissing: a hosted
 layer can offer retrieval, ranking, and cross-session recall you do not have to
@@ -81,9 +87,15 @@ repeatedly found that judges sharing a model or a framing tend to be wrong in th
 same direction, so stacking them inflates confidence without adding real coverage,
 while deliberately varying the judges de-correlates their errors.
 
-- Survey and critique of LLM-as-a-judge methods (bias, correlation, reliability):
-  search arXiv for recent "LLM-as-a-judge" survey work.
-  https://arxiv.org/ (venue) <!-- OWNER: pin the specific paper/IDs you want cited (e.g. the multi-judge correlated-error result) before publishing -->
+- Gu et al., "A Survey on LLM-as-a-Judge" (arXiv:2411.15594), surveys how to build
+  reliable LLM judges, including improving consistency and mitigating shared biases:
+  https://arxiv.org/abs/2411.15594
+- Kohli, "Nine Judges, Two Effective Votes: Correlated Errors Undermine LLM
+  Evaluation Panels" (arXiv:2605.29800), is the direct result: a panel of nine
+  same-family-leaning judges provided only about two independent votes' worth of
+  information because the models fail on the same items, so scaling a same-lens
+  panel cannot substitute for genuinely independent evaluation:
+  https://arxiv.org/abs/2605.29800
 - The practical takeaway is design guidance, not a headline: assign each judge a
   distinct job, run one round, and integrate the verdicts yourself.
 
@@ -95,10 +107,11 @@ folder structure as architecture, ordering and placement as signal. It lines up
 with this method's "orient by the map, not by grepping." The specific papers move
 fast and titles vary.
 
-- arXiv is the venue for the current work here: https://arxiv.org/
-  <!-- OWNER: pin the specific papers you referenced (the "mise en place" and
-  "folder-structure-as-architecture" pieces) with their real IDs before citing them
-  by name; left generic here to avoid citing a wrong identifier. -->
+- Zigler, "Mise en Place for Agentic Coding: Deliberate Preparation as Context
+  Engineering Methodology" (arXiv:2605.05400), argues that externalizing domain
+  knowledge into structured, up-front artifacts is what lets agents act well,
+  and names "context fluency" as the developer skill of building that structure:
+  https://arxiv.org/abs/2605.05400
 
 ## What this shelf concludes
 
