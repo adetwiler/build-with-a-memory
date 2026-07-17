@@ -1,5 +1,7 @@
 # The method behind Build With a Memory
 
+A working method from [Andrew Detwiler](https://andrewdetwiler.com).
+
 > New here? Start with the [README](README.md) and the one-paste prompt. This file is the deeper version: how I actually run this across my own projects once the one-paste setup is in place.
 
 Your AI coding agent forgets everything between sessions. It has no idea what you decided last week, why you named things the way you did, or which approach you already tried and threw away. So you re-explain. Every time. The agent re-derives context you paid for once, gets it slightly wrong, and you review the same ground again.

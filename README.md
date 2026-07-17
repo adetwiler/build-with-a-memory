@@ -1,5 +1,7 @@
 # Build With a Memory
 
+A working method from [Andrew Detwiler](https://andrewdetwiler.com). This is how I actually build.
+
 Your AI coding agent forgets everything between sessions. So it re-derives the same decisions, and you pay for it every time.
 
 The fix is simple. Make the project remember for you.
