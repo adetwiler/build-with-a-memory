@@ -57,14 +57,15 @@ It is a prompt, not a program. Your agent follows it, so check the short report 
 
 ## What this is not
 
-- It is not a database, and it is not a search engine. It is a handful of plain text files your agent reads.
-- There is no install, no server, no account, no dependency to add.
+- It is not a database, and it is not a search engine. It is a handful of plain text files your agent reads. (When a network outgrows grep, the optional [layer 2 tools](tools/) add a local, disposable search index on top; the files stay the source of truth.)
+- There is nothing to install, no server to run, and no account to create.
 - The files live in your repo and go where your repo goes. There is no API of mine in the loop. (Your agent still reads them and sends them to whatever model provider it already uses, the same as any other file it opens. This does not add a place your code goes; it does not remove one either.)
 - It does not promise perfect memory. It just writes things down so you stop re-explaining them.
 
 ## Want more?
 
 - **The method behind it.** This is the short version. The way I actually run this across my own projects (decision records, a map of what lives where, writing things down as I go) is in [THE-METHOD.md](THE-METHOD.md) and the [`method/`](method/) folder. Take the parts that fit.
+- **Layer 2: search, graph, and link health.** When the plain files outgrow grep, the [`tools/`](tools/) folder has the pieces I run on my own network, generalized: a hybrid local search index (SQLite FTS5 + local embeddings, fused by rank), an interactive link graph, and a link-health checker. Local-only, disposable, optional. Setup in [tools/README.md](tools/README.md).
 - **One command instead of a paste.** I am experimenting with a one-command setup; it will show up here if it works.
 - **Updates** live at [buildwithamemory.com](https://buildwithamemory.com). I also write about this as I go; the devlog is in [`posts/`](posts/) and subscribable by RSS (`feed.xml`).
 
