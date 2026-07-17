@@ -12,6 +12,8 @@ The knowledge you most want to keep is the knowledge that is hardest to recover:
 
 Doing it in the same pass matters because a separate "documentation phase" never happens. It gets deferred, then skipped, then the knowledge is gone. Folding capture into the work itself (part of finishing, not a chore after finishing) is the only version that survives contact with a busy week.
 
+One qualifier, so "never in a cleanup sprint" does not read as "never sweep": the session close (pillar 11) runs a capture sweep that catches what slipped. That sweep is the safety net, not the plan. If everything waits for it, you are batch-documenting again, just with a shorter batch, and the sweep goes long and lossy. Same-pass is primary; the close-out backstop exists for the misses.
+
 The reason it can be automatic is that routing is mechanical once the network exists. Each kind of fact has a home: a convention goes to the topic doc, a decision to an ADR, a loose end to an open-items list, a homeless fact to a small overflow file. The agent does not have to decide whether to capture. It has to decide where.
 
 ## How to do it today
@@ -34,6 +36,10 @@ Minimal example of a captured gotcha, dropped into the relevant topic doc:
 - **Capture everything.** Over-capture buries the load-bearing facts under trivia. The bar is "a future session would re-derive this," not "this happened."
 - **Capture nowhere.** A fact dropped into the chat instead of a file is not captured. It has to land in a committed home.
 - **Duplicate capture.** The same gotcha in four files is the drift problem again. Check for an existing home before making a new one.
+
+## The cheap way to run this
+
+Capture with the session you already have open. The fact is in context right now, so writing it down is a few lines, not a model call; a separate capture pass later would have to reload everything to recover what this moment already knows. And every captured fact is tokens a future session never spends re-deriving it, so this is the rare habit that is cheapest done eagerly.
 
 ## What it costs honestly
 
