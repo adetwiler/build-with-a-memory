@@ -35,6 +35,10 @@ Which do you want? (I will not touch the schema without a yes.)
 - **Silent autonomy creep.** An agent quietly starts making calls it used to surface, because nothing stopped it. The written line is what keeps this from drifting.
 - **Scaling the wrong axis.** Running more agents to go faster, then drowning in output you cannot verify. More unverified work is not more progress.
 
+## The cheap way to run this
+
+Pre-deciding is a cost habit as much as a safety one. Every policy you write down (a kill criterion, a fixed price, an ADR) is a deliberation the agent never runs and a question that never interrupts you. Checkpoints themselves cost almost nothing in tokens; what is expensive is unverified output you have to redo, so spending your attention at the checkpoint is the cheap version of spending it on the cleanup.
+
 ## What it costs honestly
 
 It caps your speed, and that is the uncomfortable truth of it. No matter how many agents you run, you can only make so many real decisions and verify so many changes in a day, and this pillar says to respect that limit instead of routing around it. That feels slow when the tools make it so easy to generate more. But the alternative (letting the agent decide and merge things you did not actually check) is how you end up with a fast pile of code you do not trust. The cap is the price of trusting your own repository. It is worth paying.

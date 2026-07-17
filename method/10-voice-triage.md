@@ -39,6 +39,10 @@ From your dump, I pulled these. Approve, edit, or drop each:
 - **Auto-filing the raw dump.** Turning every muttered thought into a committed task, transcription errors and all, buries you in noise and wrong work. The approval step is mandatory.
 - **Shaping the literal wrong words.** Building the task the transcription says instead of the one you meant. When the text is strange, ask.
 
+## The cheap way to run this
+
+Triage is mechanical shaping, which makes it a natural job for a small, cheap model; save the strong one for the work the items turn into. Batch it too: one pass over the day's dumps beats a model call per muttered thought, and a quick "anything new since last run?" check in front of the pass means quiet days cost nothing.
+
 ## What it costs honestly
 
 Very little to run, which is the point, but it has one real failure cost: if you skip the approval step to go faster, you get a task list full of half-thoughts and mis-heard words that costs more to clean up than it saved. The lane is only cheap if you keep the human filter on it. Kept honest, it is close to free and it stops the specific, common loss of a good idea you had at the wrong moment and never wrote down.

@@ -16,7 +16,7 @@ There is no SaaS here. No hosted memory. No lock-in. The whole point is that you
 
 I would rather show you the method and let you keep the files than run a service you have to pay for every month.
 
-## The ten pillars
+## The twelve pillars
 
 Read the ones you need. Start with the first, then the seventh (that one is the reason the rest pays off).
 
@@ -32,10 +32,12 @@ Read the ones you need. Start with the first, then the seventh (that one is the 
 | 8 | [Human checkpoints](method/08-human-checkpoints.md) | Agents are moving faster than you can verify |
 | 9 | [Safety nets from mistakes](method/09-safety-nets.md) | You made a mistake and do not want to make it twice |
 | 10 | [Voice to typed work](method/10-voice-triage.md) | You think out loud and lose half of it |
+| 11 | [The session handoff](method/11-session-handoff.md) | You stretch sessions because ending one loses the thread |
+| 12 | [Run it cheap](method/12-run-it-cheap.md) | You are worried this only works on an expensive plan |
 
 ## Quick start
 
-You do not need all ten at once. You start with one file, one record, one rule.
+You do not need all twelve at once. You start with one file, one record, one rule.
 
 1. **One context file.** Make a `CONTEXT.md` in your repo. Put the glossary in it: the five or ten terms that mean something specific in your project, each with one line. That is it. Next session, tell your agent to read it first. See [templates/CONTEXT.md](templates/CONTEXT.md).
 

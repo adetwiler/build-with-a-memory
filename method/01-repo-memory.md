@@ -42,6 +42,10 @@ Minimal example of the manual's topic index:
 - **The map goes stale.** A doc gets written and never indexed, so no session finds it. Folding the map update into "done" fixes this.
 - **Docs contradict code.** The worst outcome, because now the memory lies. The rule that saves you: when you notice drift, fix it in the same pass, or flag it if you are not sure which side is wrong.
 
+## The cheap way to run this
+
+This pillar is already the efficiency move; run it as designed and it pays for itself. The lean manual matters because it is a tax on every single turn, so audit it occasionally and evict anything that stopped earning its line. And hold the "orient by the map" rule firmly: a session that front-loads ten topic docs to answer a one-doc question is spending your money on nothing.
+
 ## What it costs honestly
 
 It costs discipline, not much else. You write the doc the first time you would have explained the thing anyway, so the marginal cost is small. The real cost is the habit of routing each new fact to a home instead of letting it evaporate into a chat log. If you skip that, the network hollows out and you are back to re-explaining. The upkeep is real. It is also the cheapest part of the whole method.

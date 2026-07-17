@@ -35,6 +35,10 @@ em dashes slip in by hand and we remove them by policy, not by eye.
 - **Check without doc.** A guard fires and nobody knows why, so someone deletes it as noise. The doc is the guard's explanation and its defense.
 - **Over-guarding.** A check for every conceivable failure turns commits into an obstacle course and trains people to bypass the gate. Guard the mistakes that actually happened or would actually hurt, not every hypothetical.
 
+## The cheap way to run this
+
+A machine check is the cheapest guard there is: a grep in a hook costs zero tokens, runs in milliseconds, and never forgets. Prefer it over asking a model to remember a rule, and over any per-turn check that taxes the whole session. When a guard does need judgment (a semantic check, not a pattern), run it at a boundary (commit, release) rather than in the hot path, and on the smallest model that can hold the rule.
+
 ## What it costs honestly
 
 Each net costs a little to build (a few lines of shell, a test, a hook) at the worst possible moment, right after something already went wrong and you are tired of it. That is the friction. And guards accumulate, so if you never prune them, the gate gets slow and people start reaching for the bypass, which defeats the purpose. So the honest cost is not just building the nets; it is maintaining a sane set of them and cutting the ones that stopped earning their place. Done with restraint, the trade is excellent: a mistake you make once becomes a mistake you cannot make twice, and you stop spending attention guarding against your own known failures by hand.

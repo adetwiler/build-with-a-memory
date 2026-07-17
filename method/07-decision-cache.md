@@ -63,6 +63,10 @@ That is a cache entry doing its job: the expensive computation (the reasoning) h
 - **Reviewing against the repo anyway.** If your judges keep reloading the whole project instead of trusting the index, you never get the savings. The discipline is to trust the cache for the hits and spend attention only on the misses.
 - **Writing ADRs nobody reads.** The cache only pays off if reviews actually consult it. An ADR folder that reviewers ignore is cost with no return.
 
+## The cheap way to run this
+
+This pillar is the single biggest saving in the method; the cheap way to run it is simply to actually use it. Keep the index compact (one line per decision) so loading it stays near free, and hold reviewers to the discipline of reading the diff plus the index instead of the whole repo. If your review costs are not falling as decisions accumulate, the cache is being ignored, and that is the first thing to fix (pillar 12 covers the rest of the cost habits).
+
 ## What it costs honestly
 
 Writing the ADR costs you the ten minutes it takes to record a decision properly, at the exact moment you would rather move on to code. That is the entire up-front cost, and it is why the cache is the pillar people skip: the bill comes now and the payoff comes later. The other honest cost is invalidation. A cache is only trustworthy if you keep it current, so every time a decision changes you owe the supersede. Skip that and the cache quietly starts lying, which is worse than no cache. But if you pay those two costs (write it down, keep it current), the return is the one thing every growing project needs and almost none get: a review cost that stops rising with the size of what you have built.

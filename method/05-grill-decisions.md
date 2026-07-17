@@ -38,6 +38,10 @@ Your call?
 - **You rubber-stamp the recommended answers.** The recommendation is a starting point, not a verdict. If you never override one, you are not really being grilled.
 - **Decisions never get recorded.** A grilling that does not end in ADRs is a conversation you will have again. The write-down is the deliverable.
 
+## The cheap way to run this
+
+A grilling is words, not code, which already makes it the cheapest place to find a hole in a plan. Keep it that way: grill against the plan and the relevant docs, not the whole repository, and let one-branch-at-a-time keep the context small. The ADRs it produces are the real saving, because each one is a debate you never pay to have again (pillar 7 does that math).
+
 ## Where this came from
 
 The interview-instead-of-agree shape here is adapted from Matt Pocock's `grill-with-docs` skill, reshaped to fit how I build. Full credit and what I changed: [CREDITS.md](../CREDITS.md).

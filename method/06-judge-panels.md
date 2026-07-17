@@ -35,6 +35,10 @@ than the one acting? Report only that class of finding. Ignore style.
 - **Letting them debate.** A debate loop launders correlated error into false consensus. One round, then you decide.
 - **No human integrator.** The panel produces verdicts, not a decision. If you auto-merge on "all green," you have handed the call to the agents, which pillar 8 says you should not.
 
+## The cheap way to run this
+
+Match the panel to the stakes, and match the models too: routine changes can take a small panel on cheap models, and the strong model earns its cost only where a miss is expensive. Lenses also cut cost directly, because a judge that reviews one narrow thing needs the diff and one doc, not the whole project. And hand every judge the decision index (pillar 7) so none of them re-derives what is already settled.
+
 ## What it costs honestly
 
 It costs more tokens and more of your attention than a single review, because now you are reading three or four verdicts and reconciling them. For a typo fix that is overkill and you should not bother. For a change that touches money, or data isolation, or anything hard to walk back, the extra cost is small next to the cost of shipping the bug that one reviewer would have missed. Match the panel to the stakes.

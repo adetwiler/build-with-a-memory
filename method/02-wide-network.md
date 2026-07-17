@@ -32,6 +32,10 @@ Minimal example of a wide index entry:
 - **The wrong home.** A project-specific fact in the wide network pollutes every project; a cross-project fact trapped in one repo gets re-learned elsewhere. The "personal or project?" question at write time is the guard.
 - **No index.** Without the top-level map, the wide network becomes a pile you cannot navigate, which is the exact failure the whole method exists to prevent.
 
+## The cheap way to run this
+
+Pointers are cheaper than copies in tokens, not just in drift: a fact with one home gets loaded once, when it is actually relevant, instead of riding along in every repo's context. Keep the wide index itself to one line per entry so scanning it stays nearly free, and let sessions open a wide file only when the pointer says it applies.
+
 ## What it costs honestly
 
 The wide network is the part people skip, because its payoff is slow. You do not feel it in week one. You feel it in month three, when you start a brand-new project and your agent already knows how you like things because the wide network came along. The cost is remembering to route cross-project facts outward instead of dumping everything into whatever repo you happen to be in. That habit takes a while to form. It is worth forming.
