@@ -120,9 +120,41 @@ def chunk(text):
                 break
 
 
+_OLLAMA_UP = None
+
+
+def ollama_available():
+    """Probe Ollama ONCE per run, not once per chunk.
+
+    Why this exists: embed() used to curl per chunk and swallow the failure. With no Ollama
+    running, every call still paid a full connect timeout - measured at ~2.3s per chunk on a
+    Windows machine - so a few hundred files took HOURS and produced nothing but zero vectors.
+    It never errored, it just appeared to hang, which is the worst failure shape there is.
+
+    One probe, short timeout, and the answer is cached for the whole run.
+    """
+    global _OLLAMA_UP
+    if _OLLAMA_UP is None:
+        try:
+            r = subprocess.run(
+                ["curl", "-s", "-m", "2", "-o", os.devnull, "-w", "%{http_code}",
+                 f"{CFG['ollama']}/api/tags"],
+                capture_output=True, text=True, timeout=5)
+            _OLLAMA_UP = r.stdout.strip().startswith("2")
+        except Exception:
+            _OLLAMA_UP = False
+        if not _OLLAMA_UP:
+            print(f"  note: Ollama not reachable at {CFG['ollama']} - indexing KEYWORD ONLY.")
+            print("        Exact terms, names, numbers and decisions still work; paraphrase will not.")
+            print("        For semantic search: install Ollama, then `ollama pull nomic-embed-text`.")
+    return _OLLAMA_UP
+
+
 def embed(texts):
-    """Local embeddings via Ollama, one call per chunk. On any failure the
-    chunk gets a zero vector: keyword search still covers it."""
+    """Local embeddings via Ollama. Skips entirely when Ollama is unreachable, rather than
+    paying a connect timeout per chunk to produce a zero vector anyway."""
+    if not ollama_available():
+        return [[0.0] * DIM for _ in texts]
     out = []
     for t in texts:
         r = subprocess.run(
