@@ -5,11 +5,18 @@
     <link>https://buildwithamemory.com</link>
     <description>A working developer&apos;s devlog on building with AI coding agents: committed markdown memory networks and a self-improving loop.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 16 Jul 2026 15:33:52 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 18 Jul 2026 00:19:03 GMT</lastBuildDate>
+    <item>
+      <title>The repo is public</title>
+      <link>https://github.com/adetwiler/build-with-a-memory/blob/main/posts/2026-07-17-the-repo-is-public.md</link>
+      <guid isPermaLink="true">https://github.com/adetwiler/build-with-a-memory/blob/main/posts/2026-07-17-the-repo-is-public.md</guid>
+      <pubDate>Fri, 17 Jul 2026 00:00:00 GMT</pubDate>
+      <description>The repo was private while I wrote it. As of this week it isn&apos;t.</description>
+    </item>
     <item>
       <title>Why this repo exists</title>
-      <link>https://buildwithamemory.com/posts/2026-07-12-why-this-repo-exists.md</link>
-      <guid isPermaLink="true">https://buildwithamemory.com/posts/2026-07-12-why-this-repo-exists.md</guid>
+      <link>https://github.com/adetwiler/build-with-a-memory/blob/main/posts/2026-07-12-why-this-repo-exists.md</link>
+      <guid isPermaLink="true">https://github.com/adetwiler/build-with-a-memory/blob/main/posts/2026-07-12-why-this-repo-exists.md</guid>
       <pubDate>Sun, 12 Jul 2026 00:00:00 GMT</pubDate>
       <description>Every AI session starts from nothing. This is the way of working that stopped me from losing the same context over and over.</description>
     </item>
