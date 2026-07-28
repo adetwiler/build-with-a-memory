@@ -50,7 +50,12 @@ Configuration lives in the same memory-tools.json the other tools read:
 Requires: python3 and git. No network calls of its own: everything goes through
 git, so your existing credentials, proxies and SSH config apply unchanged.
 """
-import argparse, fnmatch, json, pathlib, re, shutil, subprocess, sys, time
+import argparse, contextlib, fnmatch, json, os, pathlib, re, shutil, subprocess, sys, time
+
+try:
+    import fcntl                      # POSIX advisory locking; see sync_lock()
+except ImportError:                   # pragma: no cover - Windows
+    fcntl = None
 
 # --------------------------------------------------------------------------
 # config
@@ -81,16 +86,80 @@ def state():
 
 
 def save_state(s):
+    """Write the state file atomically.
+
+    A scheduled sync and an interactive one overlap routinely. write_text is not
+    atomic, so a reader arriving mid-write sees truncated JSON. That is
+    recoverable (a corrupt state file is treated as empty) but it silently costs
+    a full re-fetch of every remote. os.replace makes the swap atomic, so a
+    reader sees either the old file or the new one.
+    """
     MIRRORS.mkdir(parents=True, exist_ok=True)
-    STATE.write_text(json.dumps(s, indent=2, sort_keys=True))
+    tmp = STATE.with_suffix(f".json.tmp{os.getpid()}")
+    tmp.write_text(json.dumps(s, indent=2, sort_keys=True))
+    os.replace(tmp, STATE)
+
+
+# A tag becomes a directory name under the mirrors root, so it is a path
+# component and has to be treated as one. "../../somewhere" would otherwise
+# write a clone outside the mirrors directory entirely.
+SAFE_TAG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+
+
+@contextlib.contextmanager
+def sync_lock(timeout=180):
+    """Serialize runs that write mirrors or state.
+
+    A scheduled sync and an interactive one overlap all the time. Without a
+    lock they race to clone into the SAME mirror directory: one wins, the
+    others fail, and a loser that skipped a remote writes a state file missing
+    it. Waiting is the right behavior rather than erroring, because the process
+    holding the lock is already doing the work; the waiter wakes up, sees every
+    sha unchanged, and no-ops in a fraction of a second.
+
+    fcntl is POSIX. On a platform without it the lock degrades to nothing,
+    which is the pre-existing behavior and self-heals on the next run.
+    """
+    if fcntl is None:
+        yield True
+        return
+    MIRRORS.mkdir(parents=True, exist_ok=True)
+    handle = open(MIRRORS / ".sync.lock", "w")
+    waited, announced = 0.0, False
+    try:
+        while True:
+            try:
+                fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except OSError:
+                if not announced:
+                    print("  another sync is running; waiting for it to finish")
+                    announced = True
+                if waited >= timeout:
+                    yield False
+                    return
+                time.sleep(0.25)
+                waited += 0.25
+        try:
+            yield True
+        finally:
+            fcntl.flock(handle, fcntl.LOCK_UN)
+    finally:
+        handle.close()
 
 
 def remotes(only=None):
     for r in CFG["remotes"]:
         if only and r.get("tag") != only:
             continue
-        if not r.get("tag") or not r.get("url"):
+        tag = r.get("tag")
+        if not tag or not r.get("url"):
             print(f"  skipping malformed remote entry: {r}", file=sys.stderr)
+            continue
+        if not SAFE_TAG.match(tag) or tag in (".", ".."):
+            print(f"  skipping remote with unsafe tag {tag!r}: a tag is a directory "
+                  f"name, so it must be letters, digits, dot, dash or underscore",
+                  file=sys.stderr)
             continue
         yield r
 
@@ -126,13 +195,24 @@ def remote_head(url, ref=None):
                 return ref, sha
         raise GitError(f"remote has no branch {ref!r}")
     # No ref configured: resolve the remote's own default branch.
+    #
+    # --symref can emit MORE THAN ONE "ref:" line. A repo that is itself a clone
+    # advertises refs/remotes/origin/HEAD alongside HEAD, and a loop that just
+    # takes the last match resolves the default branch to
+    # "refs/remotes/origin/main". Match on the ref NAME being exactly HEAD, not
+    # on line shape.
     p = git("ls-remote", "--symref", url, "HEAD")
     resolved, sha = None, None
     for line in p.stdout.splitlines():
-        if line.startswith("ref:"):
-            resolved = line.split()[1].replace("refs/heads/", "")
-        elif line.endswith("HEAD"):
-            sha = line.split("\t")[0]
+        parts = line.split("\t")
+        if len(parts) != 2 or parts[1].strip() != "HEAD":
+            continue
+        if parts[0].startswith("ref: "):
+            resolved = parts[0][len("ref: "):].strip()
+            if resolved.startswith("refs/heads/"):
+                resolved = resolved[len("refs/heads/"):]
+        else:
+            sha = parts[0].strip()
     if not resolved or not sha:
         raise GitError("could not resolve the remote's default branch")
     return resolved, sha
@@ -307,13 +387,40 @@ def scan_text(text):
                    redact("hidden element: " + m.group(2)))
 
 
+def markdown_in(repo):
+    """Every .md file that genuinely lives inside `repo`.
+
+    Symlinks are skipped, not followed. A repo can commit a symlink, so an
+    untrusted repo that got followed would choose which of YOUR files get read,
+    scanned and indexed under its tag: `docs/notes -> ~/.claude/memory` is a
+    two-line attack that turns a borrowed-memory feature into a file-disclosure
+    one. os.walk does not descend into symlinked directories by default; the
+    islink check covers symlinked files, and the containment check covers
+    anything else that resolves outside the mirror.
+    """
+    root = repo.resolve()
+    for dirpath, dirnames, filenames in os.walk(repo, followlinks=False):
+        dirnames[:] = [d for d in dirnames
+                       if d != ".git" and not os.path.islink(os.path.join(dirpath, d))]
+        for name in filenames:
+            if not name.endswith(".md"):
+                continue
+            p = pathlib.Path(dirpath) / name
+            if p.is_symlink():
+                continue
+            try:
+                if not p.resolve().is_relative_to(root):
+                    continue
+            except OSError:
+                continue
+            yield p
+
+
 def scan_remote(r, repo):
     """Scan one mirror. Returns a list of findings."""
     allow = r.get("allow", [])
     findings = []
-    for path in sorted(repo.rglob("*.md")):
-        if ".git" in path.parts:
-            continue
+    for path in sorted(markdown_in(repo)):
         rel = str(path.relative_to(repo))
         if any(fnmatch.fnmatch(rel, a) for a in allow):
             continue
@@ -337,6 +444,14 @@ def blocking(findings):
 
 
 def do_sync(args):
+    with sync_lock() as acquired:
+        if not acquired:
+            print("another sync is still holding the lock; skipping this run")
+            return 0
+        return _sync(args)
+
+
+def _sync(args):
     s = state()
     MIRRORS.mkdir(parents=True, exist_ok=True)
     any_flagged = False
@@ -422,6 +537,14 @@ def do_sync(args):
 
 
 def do_scan(args):
+    with sync_lock() as acquired:
+        if not acquired:
+            print("a sync is holding the lock; skipping this scan")
+            return 0
+        return _scan(args)
+
+
+def _scan(args):
     s = state()
     flagged = 0
     for r in remotes(args.only):

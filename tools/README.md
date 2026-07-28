@@ -19,7 +19,8 @@ disposable; delete it and rebuild in a minute. Nothing leaves your machine.
 | `memory-graph.mjs` | Renders your network as an interactive force graph (one self-contained HTML file). Nodes are notes, edges are `[[wikilinks]]`. |
 | `memory-check.sh` | Link health: dangling `[[links]]`, missing markdown link targets, orphan notes no index references. `--fix` heals orphan index pointers only; it never deletes or creates notes. |
 | `memory-federate.py` | Borrows prose from other repos: mirrors their markdown locally, keeps it current with a cheap probe, and scans it before it reaches your index. See [borrowed memory](#borrowed-memory-indexing-other-peoples-repos). |
-| `test-federation.sh` | Tests the above against throwaway git repos it builds in a temp dir. No network, no third-party content. |
+| `test-federation.sh` | End-to-end test of the above against throwaway git repos it builds in a temp dir. No network, no third-party content. |
+| `test-federation-hard.sh` | The adversarial suite: hostile repos, symlink escapes, broken remotes, races, scale. |
 
 ## Setup
 

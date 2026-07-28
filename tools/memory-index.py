@@ -74,7 +74,7 @@ def federation_state():
 
 
 def roots():
-    """(tag, path, trust) for everything that gets indexed.
+    """(tag, path, trust, is_mirror) for everything that gets indexed.
 
     Local roots are yours, so they are trusted. Mirrored remotes carry whatever
     trust memory-federate.py recorded, and a quarantined remote is skipped
@@ -87,16 +87,16 @@ def roots():
         if not base.exists():
             continue
         if base.is_file():
-            out.append((r["tag"], base, "trusted"))
+            out.append((r["tag"], base, "trusted", False))
         elif (base / "docs").exists() or any((base / f).exists() for f in DEFAULT_SURFACES):
             # a project root: index its memory surfaces, not the whole tree
             for f in DEFAULT_SURFACES:
                 if (base / f).exists():
-                    out.append((r["tag"], base / f, "trusted"))
+                    out.append((r["tag"], base / f, "trusted", False))
             if (base / "docs").exists():
-                out.append((r["tag"], base / "docs", "trusted"))
+                out.append((r["tag"], base / "docs", "trusted", False))
         else:
-            out.append((r["tag"], base, "trusted"))     # a plain folder of notes
+            out.append((r["tag"], base, "trusted", False))   # a plain folder of notes
 
     fed = federation_state()
     for r in CFG["remotes"]:
@@ -112,14 +112,49 @@ def roots():
         if not st.get("scanned_at") and r.get("trust", "untrusted") != "trusted":
             print(f"  skipping {tag}: never scanned - run memory-federate.py sync")
             continue
-        out.append((tag, mirror, st.get("trust", r.get("trust", "untrusted"))))
+        out.append((tag, mirror, st.get("trust", r.get("trust", "untrusted")), True))
     return out
+
+
+def contained_markdown(root):
+    """Markdown under a MIRROR, without following symlinks out of it.
+
+    A borrowed repo can commit a symlink. Following one would let a stranger's
+    repo pick which of your files get read and indexed under their tag, which
+    turns this feature into file disclosure. This applies to every mirror, not
+    just untrusted ones: "trusted" means you vouch for the team enough to skip
+    the injection scan, not that you asked their repo to reach into your disk.
+    Local roots keep the plain walk, because a symlink you made yourself is a
+    choice, not an attack.
+    """
+    base = root.resolve()
+    for dirpath, dirnames, filenames in os.walk(root, followlinks=False):
+        dirnames[:] = [d for d in dirnames
+                       if d not in (".git", "node_modules")
+                       and not os.path.islink(os.path.join(dirpath, d))]
+        for name in filenames:
+            if not name.endswith(".md"):
+                continue
+            p = pathlib.Path(dirpath) / name
+            if p.is_symlink():
+                continue
+            try:
+                if not p.resolve().is_relative_to(base):
+                    continue
+            except OSError:
+                continue
+            yield p
 
 
 def files():
     seen = set()
-    for tag, root, trust in roots():
-        paths = [root] if root.is_file() else sorted(root.rglob("*.md"))
+    for tag, root, trust, is_mirror in roots():
+        if root.is_file():
+            paths = [root]
+        elif is_mirror:
+            paths = sorted(contained_markdown(root))
+        else:
+            paths = sorted(root.rglob("*.md"))
         for p in paths:
             if p in seen or "node_modules" in p.parts or ".git" in p.parts:
                 continue
