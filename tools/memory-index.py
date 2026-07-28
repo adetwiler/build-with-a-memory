@@ -35,7 +35,7 @@ CLAUDE.md, AGENTS.md, CONTEXT.md, OPEN.md, and everything under docs/.
 Requires: python3, numpy. Optional: Ollama running locally for semantic search
 (`ollama pull nomic-embed-text` once). Add the db file to .gitignore.
 """
-import hashlib, json, pathlib, re, sqlite3, subprocess, sys, time
+import hashlib, json, os, pathlib, re, sqlite3, subprocess, sys, time
 import numpy as np
 
 CHUNK_WORDS = 220        # ~1 idea per chunk; markdown sections respected first
@@ -50,45 +50,81 @@ def config():
     cfg.setdefault("model", "nomic-embed-text")
     cfg.setdefault("ollama", "http://localhost:11434")
     cfg.setdefault("roots", [{"tag": "repo", "path": "."}])
+    cfg.setdefault("mirrors", ".memory-mirrors")
+    cfg.setdefault("remotes", [])
     return cfg
 
 
 CFG = config()
 DB = pathlib.Path(CFG["db"]).expanduser()
 MODEL = CFG["model"]
+MIRRORS = pathlib.Path(CFG["mirrors"]).expanduser()
 
 DEFAULT_SURFACES = ["CLAUDE.md", "AGENTS.md", "CONTEXT.md", "OPEN.md"]
 
 
+def federation_state():
+    p = MIRRORS / "state.json"
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text())
+    except json.JSONDecodeError:
+        return {}
+
+
 def roots():
+    """(tag, path, trust) for everything that gets indexed.
+
+    Local roots are yours, so they are trusted. Mirrored remotes carry whatever
+    trust memory-federate.py recorded, and a quarantined remote is skipped
+    entirely: the point of a fail-closed scan is that flagged content never
+    reaches the index in the first place.
+    """
     out = []
     for r in CFG["roots"]:
         base = pathlib.Path(r["path"]).expanduser()
         if not base.exists():
             continue
         if base.is_file():
-            out.append((r["tag"], base))
+            out.append((r["tag"], base, "trusted"))
         elif (base / "docs").exists() or any((base / f).exists() for f in DEFAULT_SURFACES):
             # a project root: index its memory surfaces, not the whole tree
             for f in DEFAULT_SURFACES:
                 if (base / f).exists():
-                    out.append((r["tag"], base / f))
+                    out.append((r["tag"], base / f, "trusted"))
             if (base / "docs").exists():
-                out.append((r["tag"], base / "docs"))
+                out.append((r["tag"], base / "docs", "trusted"))
         else:
-            out.append((r["tag"], base))     # a plain folder of notes
+            out.append((r["tag"], base, "trusted"))     # a plain folder of notes
+
+    fed = federation_state()
+    for r in CFG["remotes"]:
+        tag = r.get("tag")
+        mirror = MIRRORS / tag if tag else None
+        if not tag or not mirror.exists():
+            continue
+        st = fed.get(tag, {})
+        if st.get("quarantined"):
+            print(f"  skipping {tag}: quarantined by the safety scan "
+                  f"({len(st.get('findings', []))} finding(s)) - memory-federate.py scan")
+            continue
+        if not st.get("scanned_at") and r.get("trust", "untrusted") != "trusted":
+            print(f"  skipping {tag}: never scanned - run memory-federate.py sync")
+            continue
+        out.append((tag, mirror, st.get("trust", r.get("trust", "untrusted"))))
     return out
 
 
 def files():
     seen = set()
-    for tag, root in roots():
+    for tag, root, trust in roots():
         paths = [root] if root.is_file() else sorted(root.rglob("*.md"))
         for p in paths:
             if p in seen or "node_modules" in p.parts or ".git" in p.parts:
                 continue
             seen.add(p)
-            yield tag, p
+            yield tag, p, trust
 
 
 def chunk(text):
@@ -177,6 +213,12 @@ def connect():
         embedding BLOB)""")
     db.execute("""CREATE VIRTUAL TABLE IF NOT EXISTS chunks_fts
         USING fts5(body, heading, path UNINDEXED, content=chunks, content_rowid=id)""")
+    # Added when federation landed. Migrate in place rather than forcing a
+    # rebuild: an existing index holds only local content, which is trusted.
+    cols = {r[1] for r in db.execute("PRAGMA table_info(chunks)")}
+    if "trust" not in cols:
+        db.execute("ALTER TABLE chunks ADD COLUMN trust TEXT DEFAULT 'trusted'")
+        db.commit()
     return db
 
 
@@ -188,7 +230,7 @@ def sync(rebuild=False):
     seen, changed, added_chunks = set(), 0, 0
     t0 = time.time()
 
-    for tag, path in files():
+    for tag, path, trust in files():
         text = path.read_text(errors="ignore")
         h = hashlib.sha256(text.encode()).hexdigest()[:16]
         key = str(path)
@@ -208,8 +250,9 @@ def sync(rebuild=False):
                 if n > 0:
                     arr = arr / n                      # store normalized: cosine = dot
                 cur = db.execute(
-                    "INSERT INTO chunks(path, tag, heading, body, embedding) VALUES(?,?,?,?,?)",
-                    (key, tag, heading, body, arr.tobytes()))
+                    "INSERT INTO chunks(path, tag, heading, body, embedding, trust) "
+                    "VALUES(?,?,?,?,?,?)",
+                    (key, tag, heading, body, arr.tobytes(), trust))
                 cid = cur.lastrowid
                 db.execute("INSERT INTO chunks_fts(rowid, body, heading, path) VALUES(?,?,?,?)",
                            (cid, body, heading, key))
@@ -235,8 +278,11 @@ if __name__ == "__main__":
     if "--stats" in sys.argv:
         db = connect()
         print(f"db: {DB}")
-        for tag, n in db.execute("SELECT tag, COUNT(*) FROM chunks GROUP BY tag ORDER BY 2 DESC"):
-            print(f"  {n:>6} chunks  {tag}")
+        for tag, trust, n in db.execute(
+                "SELECT tag, COALESCE(trust,'trusted'), COUNT(*) FROM chunks "
+                "GROUP BY tag, trust ORDER BY 3 DESC"):
+            mark = "" if trust == "trusted" else f"  [{trust}]"
+            print(f"  {n:>6} chunks  {tag}{mark}")
         print(f"  {db.execute('SELECT COUNT(*) FROM chunks').fetchone()[0]:>6} chunks  TOTAL")
     else:
         sync(rebuild="--rebuild" in sys.argv)

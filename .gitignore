@@ -23,3 +23,11 @@ npm-debug.log*
 .memory-index.db
 memory-tools.json
 memory-graph/
+
+# Mirrored copies of other people's repos. Derived and disposable, and someone
+# else's content besides: never commit it into this tree.
+.memory-mirrors/
+
+# Python bytecode (my py_compile check left these once)
+__pycache__/
+*.pyc
