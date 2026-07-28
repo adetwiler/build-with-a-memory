@@ -21,6 +21,7 @@
 #   4. Dead links: every relative markdown link in every tracked .md file
 #      points at a file that exists.
 #   5. Feed freshness: feed.xml is not older than the newest post in posts/.
+#   6. Feed link shape: every post has an item link at the site's devlog path.
 #
 # See method/09-safety-nets.md: each gate is a mistake class turned into a
 # guard. A green run is not a promise of perfection; it is proof the known
@@ -93,10 +94,36 @@ if [ -d posts ] && [ -f feed.xml ]; then
   fi
 fi
 
+# --- 6. Feed link shape ------------------------------------------------------
+# Freshness is a timestamp. It says nothing about whether the links POINT
+# anywhere, and for four days every item in feed.xml returned 404 while check 5
+# reported the feed fresh: the base URL had been swapped to the site per the
+# 2026-07-27 audition while the path still built the old GitHub blob layout.
+#
+# So this asserts the SHAPE the audition decided on: one item per post, at the
+# site's /devlog/<slug>/ path. Deliberately offline. A gate that needs the
+# network is a gate that gets skipped, and the failure this catches is a wrong
+# URL, not a down server.
+if [ -d posts ] && [ -f feed.xml ]; then
+  bad_feed_links=""
+  for post in posts/*.md; do
+    [ -e "$post" ] || continue
+    case "$post" in */README.md) continue ;; esac
+    slug="$(basename "$post" .md)"
+    if ! grep -q "<link>https://buildwithamemory.com/devlog/${slug}/</link>" feed.xml; then
+      bad_feed_links="${bad_feed_links}
+  - ${slug} has no /devlog/${slug}/ item link"
+    fi
+  done
+  if [ -n "$bad_feed_links" ]; then
+    say_fail "feed.xml item links are wrong (run: node scripts/make-feed.mjs):${bad_feed_links}"
+  fi
+fi
+
 echo ""
 if [ "$fail" -ne 0 ]; then
   echo "RELEASE CHECK FAILED. Fix the items above before anything ships."
   exit 1
 fi
-echo "Release check clean: no leaks, no dashes, prompt in sync, links resolve, feed fresh."
+echo "Release check clean: no leaks, no dashes, prompt in sync, links resolve, feed fresh and pointing at real pages."
 exit 0
