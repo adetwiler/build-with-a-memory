@@ -13,10 +13,16 @@ import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// OWNER: base URL for the channel <link> and each item's link/guid. Points at
-// the GitHub blob view of the repo, which renders each post's markdown and
-// resolves the moment the repo is public. Swap it for buildwithamemory.com (or a
-// GitHub Pages URL) if the devlog later gets a dedicated home. No trailing slash.
+// OWNER: base URL for the channel <link> and each item's link/guid. Decided
+// 2026-07-27 (audition "Where should the buildwithamemory RSS feed's links
+// point?"): the SITE DEVLOG, not GitHub blob URLs. The site serves
+// /devlog/<slug>/ for every post in this folder.
+//
+// The audition's own warning is the thing to keep in mind here: two feeds that
+// disagree is how a subscriber lands on a dead URL. This repo's feed.xml and the
+// site's /feed.xml must emit identical item links. They did not for four days,
+// because this base URL was swapped to the site while the path below still built
+// the GitHub blob layout, so every item 404'd. No trailing slash.
 const FEED_BASE_URL = 'https://buildwithamemory.com';
 
 const CHANNEL_TITLE = 'Build With a Memory';
@@ -87,8 +93,10 @@ for (const file of files) {
     console.error(`Skipping ${file}: unparseable date "${data.date}".`);
     continue;
   }
-  // Keep the .md so the GitHub blob view resolves the file directly.
-  const link = `${FEED_BASE_URL}/posts/${file}`;
+  // The site routes each post at /devlog/<slug>/, where the slug is the filename
+  // without .md. Trailing slash included because that is what the site serves and
+  // what its own feed emits; a mismatch here is a redirect at best.
+  const link = `${FEED_BASE_URL}/devlog/${file.replace(/\.md$/, '')}/`;
   items.push({ ...data, pubDate, link });
 }
 
