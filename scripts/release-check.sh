@@ -95,15 +95,17 @@ if [ -d posts ] && [ -f feed.xml ]; then
 fi
 
 # --- 6. Feed link shape ------------------------------------------------------
-# Freshness is a timestamp. It says nothing about whether the links POINT
-# anywhere, and for four days every item in feed.xml returned 404 while check 5
-# reported the feed fresh: the base URL had been swapped to the site per the
-# 2026-07-27 audition while the path still built the old GitHub blob layout.
+# feed.xml is GENERATED. On 2026-07-27 it was hand-edited to the /devlog/<slug>/
+# shape the audition decided on, and make-feed.mjs was left emitting the old
+# GitHub blob layout. So the artifact was right and its generator was wrong, and
+# the next regeneration silently reverted the hand-edit: every item 404'd while
+# check 5 called the feed fresh, because freshness compares timestamps and says
+# nothing about where a link points.
 #
-# So this asserts the SHAPE the audition decided on: one item per post, at the
-# site's /devlog/<slug>/ path. Deliberately offline. A gate that needs the
-# network is a gate that gets skipped, and the failure this catches is a wrong
-# URL, not a down server.
+# The root bug is hand-editing a generated file. This check is the backstop that
+# notices when the artifact and the decision disagree, whichever one drifted.
+# Deliberately offline: a gate that needs the network is a gate that gets
+# skipped, and the failure this catches is a wrong URL, not a down server.
 if [ -d posts ] && [ -f feed.xml ]; then
   bad_feed_links=""
   for post in posts/*.md; do
@@ -127,3 +129,33 @@ if [ "$fail" -ne 0 ]; then
 fi
 echo "Release check clean: no leaks, no dashes, prompt in sync, links resolve, feed fresh and pointing at real pages."
 exit 0
+
+# --- 7. Pillar integrity ---------------------------------------------------
+# Every method/NN-*.md must have a row in THE-METHOD.md, and the written-out
+# pillar count must match the file count. This exists because the count HAS
+# drifted (the site said twelve while the repo had thirteen), and pillar 14's
+# own corollary applies to this repo too: a lesson that matters becomes a
+# check, not a comment.
+if [ -d method ] && [ -f THE-METHOD.md ]; then
+  pillar_missing=""
+  pillar_count=0
+  for m in method/[0-9][0-9]-*.md; do
+    pillar_count=$((pillar_count + 1))
+    grep -q "](${m})" THE-METHOD.md || pillar_missing="${pillar_missing} ${m}"
+  done
+  if [ -n "$pillar_missing" ]; then
+    echo "FAIL: pillar file(s) missing from THE-METHOD.md table:${pillar_missing}" >&2
+    exit 1
+  fi
+  count_word=""
+  case $pillar_count in
+    12) count_word="twelve" ;; 13) count_word="thirteen" ;; 14) count_word="fourteen" ;;
+    15) count_word="fifteen" ;; 16) count_word="sixteen" ;; 17) count_word="seventeen" ;;
+    18) count_word="eighteen" ;; 19) count_word="nineteen" ;; 20) count_word="twenty" ;;
+  esac
+  if [ -n "$count_word" ] && ! grep -qi "The ${count_word} pillars" THE-METHOD.md; then
+    echo "FAIL: method/ holds ${pillar_count} pillars but THE-METHOD.md does not say 'The ${count_word} pillars'." >&2
+    exit 1
+  fi
+  echo "Pillar integrity: ${pillar_count} pillar files, all in the table, count word matches."
+fi

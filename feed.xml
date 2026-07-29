@@ -5,7 +5,14 @@
     <link>https://buildwithamemory.com</link>
     <description>A working developer&apos;s devlog on building with AI coding agents: committed markdown memory networks and a self-improving loop.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 28 Jul 2026 19:44:20 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 29 Jul 2026 02:54:26 GMT</lastBuildDate>
+    <item>
+      <title>The network knew why, but not what</title>
+      <link>https://buildwithamemory.com/devlog/2026-07-29-the-network-knew-why-but-not-what/</link>
+      <guid isPermaLink="true">https://buildwithamemory.com/devlog/2026-07-29-the-network-knew-why-but-not-what/</guid>
+      <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
+      <description>Pillar 14. A memory network records decisions well and current state badly, and the gap is where agents guess.</description>
+    </item>
     <item>
       <title>A thirteenth pillar</title>
       <link>https://buildwithamemory.com/devlog/2026-07-28-a-thirteenth-pillar/</link>
