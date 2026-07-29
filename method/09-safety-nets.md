@@ -29,9 +29,24 @@ Use a period, comma, colon, or parentheses. This guard exists because
 em dashes slip in by hand and we remove them by policy, not by eye.
 ```
 
+## Watch the guard fail before you trust it
+
+A check you have never seen reject anything is not a guard yet. It is a green light of unknown wiring, and a green light is exactly what a broken check looks like.
+
+So after you write one, put the mistake back and confirm the check catches it. Reintroduce the bad line, run the guard, watch it fail, then restore. It takes a minute and it is the only evidence that the thing you just built is load-bearing.
+
+Two ways a check passes while measuring nothing, both easy to hit:
+
+**The test that agrees with the bug.** A test written after the fact tends to be written against the code as it now stands, so it encodes the current behaviour rather than the intended one. One written here to catch a stale entry filtered words to those longer than four characters, which quietly dropped the four-letter words carrying all the meaning in that sentence. It passed against the exact bug it existed for. Nothing about a green run said so.
+
+**The rejection that means nothing.** Checking that a request without credentials is refused proves very little on its own, because a typo in the header name produces the identical refusal. You have then tested that your own mistake fails, not that the guard works. Always pair the negative case with a positive one: confirm a correct credential is accepted, or the negative result is unreadable.
+
+The general shape: a guard has to be shown discriminating between the good case and the bad case. Testing only one side tells you nothing about which side it is responding to.
+
 ## Failure modes
 
 - **Doc without check.** The lesson is written, nobody reads it at the right time, the mistake recurs. The check is the half that actually gates.
+- **Check never seen failing.** It was written, it went green, everyone relaxed. Green was its only state from the beginning and nobody noticed, because nothing about a passing check announces that it is inert.
 - **Check without doc.** A guard fires and nobody knows why, so someone deletes it as noise. The doc is the guard's explanation and its defense.
 - **Over-guarding.** A check for every conceivable failure turns commits into an obstacle course and trains people to bypass the gate. Guard the mistakes that actually happened or would actually hurt, not every hypothetical.
 
