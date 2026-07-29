@@ -122,20 +122,17 @@ if [ -d posts ] && [ -f feed.xml ]; then
   fi
 fi
 
-echo ""
-if [ "$fail" -ne 0 ]; then
-  echo "RELEASE CHECK FAILED. Fix the items above before anything ships."
-  exit 1
-fi
-echo "Release check clean: no leaks, no dashes, prompt in sync, links resolve, feed fresh and pointing at real pages."
-exit 0
-
 # --- 7. Pillar integrity ---------------------------------------------------
 # Every method/NN-*.md must have a row in THE-METHOD.md, and the written-out
 # pillar count must match the file count. This exists because the count HAS
 # drifted (the site said twelve while the repo had thirteen), and pillar 14's
 # own corollary applies to this repo too: a lesson that matters becomes a
 # check, not a comment.
+#
+# 2026-07-28: an earlier edit appended this section AFTER the script's exit
+# statements, so the gate the devlog post describes never ran. A gate that is
+# never executed is a comment. It now runs with the other checks; do not move
+# it below the summary block again.
 if [ -d method ] && [ -f THE-METHOD.md ]; then
   pillar_missing=""
   pillar_count=0
@@ -144,8 +141,7 @@ if [ -d method ] && [ -f THE-METHOD.md ]; then
     grep -q "](${m})" THE-METHOD.md || pillar_missing="${pillar_missing} ${m}"
   done
   if [ -n "$pillar_missing" ]; then
-    echo "FAIL: pillar file(s) missing from THE-METHOD.md table:${pillar_missing}" >&2
-    exit 1
+    say_fail "pillar file(s) missing from THE-METHOD.md table:${pillar_missing}"
   fi
   count_word=""
   case $pillar_count in
@@ -154,8 +150,36 @@ if [ -d method ] && [ -f THE-METHOD.md ]; then
     18) count_word="eighteen" ;; 19) count_word="nineteen" ;; 20) count_word="twenty" ;;
   esac
   if [ -n "$count_word" ] && ! grep -qi "The ${count_word} pillars" THE-METHOD.md; then
-    echo "FAIL: method/ holds ${pillar_count} pillars but THE-METHOD.md does not say 'The ${count_word} pillars'." >&2
-    exit 1
+    say_fail "method/ holds ${pillar_count} pillars but THE-METHOD.md does not say 'The ${count_word} pillars'."
+  else
+    echo "Pillar integrity: ${pillar_count} pillar files, all in the table, count word matches."
   fi
-  echo "Pillar integrity: ${pillar_count} pillar files, all in the table, count word matches."
 fi
+
+# --- 8. Prose lint (reads-like-a-person check) -------------------------------
+# Every published .md in posts/ and method/ passes the local prose lint, which
+# blocks the mechanical tells of generated writing (broken idioms, hype words,
+# narration adverbs, banned constructions). This exists because the pillar 14
+# post shipped with lines like "Honest label on the tin" and a narration adverb
+# that no human pass caught. The lint is a machine-local tool; when it is not
+# installed the check says so out loud instead of silently passing.
+VOICE_LINT="${HOME}/.claude/scripts/voice-lint.mjs"
+if [ -f "$VOICE_LINT" ]; then
+  prose_files="$(git ls-files 'posts/*.md' 'method/*.md' | grep -v '/README\.md$' || true)"
+  if [ -n "$prose_files" ]; then
+    # shellcheck disable=SC2086
+    if ! node "$VOICE_LINT" $prose_files; then
+      say_fail "prose lint found blocking tells in published posts/method files (see above)"
+    fi
+  fi
+else
+  echo "SKIP: prose lint not installed on this machine (voice-lint.mjs); prose was not checked."
+fi
+
+echo ""
+if [ "$fail" -ne 0 ]; then
+  echo "RELEASE CHECK FAILED. Fix the items above before anything ships."
+  exit 1
+fi
+echo "Release check clean: no leaks, no dashes, prompt in sync, links resolve, feed fresh and pointing at real pages, pillars counted, prose linted."
+exit 0

@@ -22,7 +22,7 @@ So the value and the risk arrive together, and the boundary is what lets you tak
 2. **Probe before you fetch.** `git ls-remote` asks "has anything changed" in one round trip with no object negotiation. If the sha has not moved, do nothing. Re-cloning to check for changes is the expensive way to ask a cheap question.
 3. **Treat the mirror as derived.** Same rule as the index: delete it and rebuild. Never edit inside one, and never commit one into your own tree.
 4. **Tag trust at index time, show it at read time.** Every chunk carries where it came from. When a borrowed hit comes back, it should read as a quotation, and any structured output an agent consumes should say so in the payload. If the difference is only in your head, it is not in the system.
-5. **Scan on arrival and fail closed.** Flagged content stays out of the index until a human reads the findings and releases it. A gate that lets things through while you decide is not a gate.
+5. **Scan on arrival and fail closed.** Flagged content stays out of the index until a human reads the findings and releases it. If flagged content can still reach the index while you decide, the gate is not blocking anything.
 6. **Check before you mirror a work repo.** Read access to an employer's or client's repo does not by itself settle whether a copy on your laptop, inside an index that also serves your personal work, is allowed. Mirror their conventions rather than their product, and ask.
 
 ## Failure modes

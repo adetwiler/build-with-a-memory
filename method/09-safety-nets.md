@@ -4,7 +4,7 @@
 
 Every mistake becomes a guardrail, automatically. When something goes wrong (a leak, a race, a broken build, a limit you did not know about), you do two things in the same pass: you write the lesson down as a line in the docs, and you add a machine check that catches it next time. A hook. A version guard. A smoke test. A grep in a pre-commit gate.
 
-Put simply: your mistakes become guardrails automatically. The incident is not just fixed. It is converted into something that cannot happen the same way again.
+Put simply: your mistakes become guardrails automatically. The incident gets fixed, and then it is converted into something that cannot happen the same way again.
 
 ## Why it works
 
@@ -41,4 +41,4 @@ A machine check is the cheapest guard there is: a grep in a hook costs zero toke
 
 ## What it costs honestly
 
-Each net costs a little to build (a few lines of shell, a test, a hook) at the worst possible moment, right after something already went wrong and you are tired of it. That is the friction. And guards accumulate, so if you never prune them, the gate gets slow and people start reaching for the bypass, which defeats the purpose. So the honest cost is not just building the nets; it is maintaining a sane set of them and cutting the ones that stopped earning their place. Done with restraint, the trade is excellent: a mistake you make once becomes a mistake you cannot make twice, and you stop spending attention guarding against your own known failures by hand.
+Each net costs a little to build (a few lines of shell, a test, a hook) at the worst possible moment, right after something already went wrong and you are tired of it. That is the friction. And guards accumulate, so if you never prune them, the gate gets slow and people start reaching for the bypass, which defeats the purpose. So the honest cost is building the nets and then maintaining a sane set of them, cutting the ones that stopped earning their place. Done with restraint, the trade is excellent: a mistake you make once becomes a mistake you cannot make twice, and you stop spending attention guarding against your own known failures by hand.

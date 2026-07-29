@@ -12,7 +12,7 @@ Most bad builds trace back to a decision nobody actually made. Something was ass
 
 One branch at a time matters. A wall of ten questions gets a rushed wall of ten half-answers. One sharp question, with the agent's recommended answer next to it, gets a real decision, because you are only deciding one thing and you have a starting point to react to. Reacting to a proposal is easier than generating an answer from nothing, so you get further, faster, with less staring.
 
-Recording each decision as an ADR that names its alternatives is what makes the grilling pay off later. The ADR is not just "we chose A." It is "we chose A over B and C, for these reasons." That is the artifact that stops the same debate from reopening in three weeks, and it is the raw material for the decision cache (pillar 7).
+Recording each decision as an ADR that names its alternatives is what makes the grilling pay off later. The ADR does not stop at "we chose A." It says "we chose A over B and C, for these reasons." That is the artifact that stops the same debate from reopening in three weeks, and it is the raw material for the decision cache (pillar 7).
 
 Risky ideas as separate commits is a small thing that saves real pain. If an experiment goes bad, you revert one commit instead of untangling it from three unrelated changes.
 

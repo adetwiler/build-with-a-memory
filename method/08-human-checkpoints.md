@@ -8,7 +8,7 @@ The practical consequence: your throughput is not "how many agents can I run." I
 
 ## Why it works
 
-AI gets things wrong. Confidently, fluently, in a way that reads correct. That is not a flaw you prompt away; it is the current nature of the tool. So the safe design is not "trust the agent and spot-check." It is "let the agent do everything except the irreversible call, and put a human on that call every time."
+AI gets things wrong, and the wrong answer reads as sure of itself as the right one. That is not a flaw you prompt away; it is the current nature of the tool. So the safe design is not "trust the agent and spot-check." It is "let the agent do everything except the irreversible call, and put a human on that call every time."
 
 This is also why the earlier pillars are shaped the way they are. Grilling (pillar 5) prepares a decision for you to make. Judge panels (pillar 6) prepare verdicts for you to integrate. Research (pillar 4) prepares evidence for you to weigh. None of them decide. They compress the work of deciding down to the moment of judgment, and then they stop and wait for you. That is the design working as intended, not a limitation of it.
 

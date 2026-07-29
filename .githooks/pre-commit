@@ -109,6 +109,27 @@ if git diff --cached --name-only | grep -qE '^(README\.md|prompt\.txt)$'; then
   fi
 fi
 
+# --- Gate (d): prose lint on published writing ---
+# Staged posts/ and method/ markdown passes the local prose lint (blocks the
+# mechanical tells of generated writing: broken idioms, hype words, narration
+# adverbs, banned constructions). Added 2026-07-28 after the pillar 14 post
+# shipped with "Honest label on the tin" and a narration adverb in it. The
+# lint is a machine-local tool; when it is absent the gate says so out loud
+# instead of silently passing.
+VOICE_LINT="${HOME}/.claude/scripts/voice-lint.mjs"
+staged_prose="$(git diff --cached --name-only --diff-filter=ACM -- 'posts/*.md' 'method/*.md' | grep -v '/README\.md$' || true)"
+if [ -n "$staged_prose" ]; then
+  if [ -f "$VOICE_LINT" ]; then
+    # shellcheck disable=SC2086
+    if ! node "$VOICE_LINT" $staged_prose; then
+      echo "BLOCKED: prose lint found blocking tells in staged posts/method files (see above)."
+      fail=1
+    fi
+  else
+    echo "NOTE: prose lint not installed on this machine (voice-lint.mjs); staged prose was not checked."
+  fi
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo ""
   echo "Commit rejected. Fix the lines above and re-commit."

@@ -17,7 +17,7 @@ Token cost concentrates in two places: the context you load and the calls you ma
 
 The second one, calls you make, is where naive automation leaks money. A hook that runs a model on every turn, a capture pass with no novelty gate, a judge panel sized for a payments change but fired on a typo fix: each is a small leak that compounds across a working week. The habits above close them, and none of them reduce what the method delivers. They only cut the calls that were not producing anything.
 
-Tool-agnostic is part of the same answer. Plain markdown runs on any agent, which means you can put each job on the cheapest tool that does it well, and when prices or tools change, your memory moves with you. Portability is not just the anti-lock-in principle. It is also the pricing lever.
+Tool-agnostic is part of the same answer. Plain markdown runs on any agent, which means you can put each job on the cheapest tool that does it well, and when prices or tools change, your memory moves with you. Portability is the anti-lock-in principle, and it is also the pricing lever.
 
 ## How to do it today
 
