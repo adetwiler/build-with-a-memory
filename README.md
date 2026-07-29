@@ -62,6 +62,15 @@ It is a prompt, not a program. Your agent follows it, so check the short report 
 - The files live in your repo and go where your repo goes. There is no API of mine in the loop. (Your agent still reads them and sends them to whatever model provider it already uses, the same as any other file it opens. This does not add a place your code goes; it does not remove one either.)
 - It does not promise perfect memory. It just writes things down so you stop re-explaining them.
 
+## Give yourself a memory too
+
+The prompt above gives one **repo** a memory. The setup wizard gives **you**
+one: a personal instructions file your agent loads every session, a memory
+folder it writes to as you work, and three one-word habits (`handoff`,
+`pick up`, `idea`) that make sessions resumable. Same deal as the prompt:
+your agent runs it, it takes about ten minutes, and it is plain files you own.
+Start at [START-HERE.md](START-HERE.md).
+
 ## Want more?
 
 - **The method behind it.** This is the short version. The way I actually run this across my own projects (decision records, a map of what lives where, writing things down as I go) is in [THE-METHOD.md](THE-METHOD.md) and the [`method/`](method/) folder. Take the parts that fit.

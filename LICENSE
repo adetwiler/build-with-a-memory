@@ -13,8 +13,8 @@ Full text: https://creativecommons.org/publicdomain/zero/1.0/
 
 ## Templates and code (MIT)
 
-Everything under `templates/`, the git hooks under `.githooks/`, and the scripts
-under `scripts/` are released under the MIT License. Copy them into your own work,
+Everything under `templates/`, the git hooks under `.githooks/`, the scripts
+under `scripts/`, and the tests under `tests/` are released under the MIT License. Copy them into your own work,
 commercial or not, no attribution required.
 
 MIT License
@@ -41,9 +41,9 @@ SOFTWARE.
 
 ## Method documentation (CC-BY-4.0)
 
-The written method (`README.md`, `THE-METHOD.md`, everything under `method/`,
-`research/`, and `posts/`, the generated `feed.xml`, and the ADR under
-`docs/adr/`) is released under the Creative Commons Attribution 4.0
+The written method (`README.md`, `THE-METHOD.md`, `START-HERE.md`, everything
+under `method/`, `wizard/`, `research/`, and `posts/`, the generated `feed.xml`,
+and the ADR under `docs/adr/`) is released under the Creative Commons Attribution 4.0
 International License. You may share and adapt it, including commercially, as long
 as you give appropriate credit.
 
