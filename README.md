@@ -6,6 +6,14 @@ Your AI coding agent forgets everything between sessions. So it re-derives the s
 
 The fix is simple. Make the project remember for you.
 
+![The shape of one memory network: points and the links between them](docs/images/memory-shape.svg)
+
+That is my own network, redrawn on every commit to this repo. Each point is one note and
+each line is one note linking to another. **The words are deliberately not there** and never
+will be: the picture is generated from the files, then every name is thrown away before
+anything is drawn. It is here to show that the method compounds into something with a shape,
+which is the only part of it worth proving with a picture.
+
 ## The fix
 
 Paste one prompt into Claude Code, Cursor, or whatever AI coding agent you use, in the repo you want it to remember. It reads your project, writes down what it is and how to run it, and sets up a few small files where decisions and gotchas get saved as you work. Next session, your agent reads those first and picks up where you left off.

@@ -151,3 +151,27 @@ if [ "$fail" -ne 0 ]; then
 fi
 
 exit 0
+
+# ── THE SHAPE OF THE MEMORY NETWORK ───────────────────────────────────────────
+# Owner, 2026-07-31: "every time it does a push it'll show the shape of my memory
+# network. It will not say what those points are but they will just be points and
+# things connected."
+#
+# Regenerated on every commit so the picture in the repo is never stale. Points and
+# lines only: the generator discards every string before it draws, then greps its own
+# output for every note name it read and REFUSES to write the file if one appears.
+#
+# SKIPPED SILENTLY when the generator is absent, which is the normal case for anyone
+# else who clones this repo. Their commits must not fail because a private script on
+# one machine is missing.
+SHAPE_GEN="$HOME/.claude/scripts/memory/graph-anon.mjs"
+if [ -f "$SHAPE_GEN" ] && command -v node >/dev/null 2>&1; then
+  if node "$SHAPE_GEN" --linked-only --out docs/images/memory-shape.svg >/dev/null 2>&1; then
+    git add docs/images/memory-shape.svg 2>/dev/null || true
+  else
+    # The generator refuses rather than leaking. If it refused, that is a hard stop.
+    echo "BLOCKED: the memory-shape generator refused to write. Run it by hand and read why:"
+    echo "  node $SHAPE_GEN --linked-only --out docs/images/memory-shape.svg"
+    exit 1
+  fi
+fi
