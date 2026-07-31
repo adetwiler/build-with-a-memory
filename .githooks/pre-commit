@@ -81,7 +81,21 @@ if [ -z "$DENYLIST" ]; then
   exit 1
 fi
 
-bleed_hits="$(printf '%s\n' "$stream" | grep -iE "$DENYLIST" || true)"
+# FAIL CLOSED ON A BROKEN PATTERN (2026-07-30). `|| true` swallowed grep's exit
+# code, and grep exits >1 when the PATTERN itself is invalid - so one unescaped
+# metacharacter in one denylist TERM made this gate return nothing and pass
+# everything, silently, on a public-bound repo. A guard that fails open is worse
+# than no guard, because it is trusted. 0 = match, 1 = no match, >1 = error.
+set +e
+bleed_hits="$(printf '%s\n' "$stream" | grep -iE "$DENYLIST" 2>/tmp/bleed.err)"
+bleed_rc=$?
+set -e
+if [ "$bleed_rc" -gt 1 ]; then
+  echo "BLOCKED: the bleed gate could not run - the denylist is not a valid pattern."
+  sed 's/^/  /' /tmp/bleed.err
+  echo "  Escape regex metacharacters in .githooks/denylist.local (e.g. ( ) [ ] | + ?)."
+  exit 1
+fi
 if [ -n "$bleed_hits" ]; then
   echo "BLOCKED: staged change adds a private tell (bleed check):"
   printf '%s\n' "$bleed_hits" | sed 's/^/  /'
