@@ -23,9 +23,9 @@ import { fileURLToPath } from 'node:url';
 // site's /feed.xml must emit identical item links. They did not for four days,
 // because this base URL was swapped to the site while the path below still built
 // the GitHub blob layout, so every item 404'd. No trailing slash.
-const FEED_BASE_URL = 'https://buildwithamemory.com';
+const FEED_BASE_URL = 'https://buildwiththememory.com';
 
-const CHANNEL_TITLE = 'Build With a Memory';
+const CHANNEL_TITLE = 'Build With the Memory';
 const CHANNEL_DESCRIPTION =
   "A working developer's devlog on building with AI coding agents: committed markdown memory networks and a self-improving loop.";
 

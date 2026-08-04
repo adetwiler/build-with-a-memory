@@ -1,4 +1,4 @@
-# The method behind Build With a Memory
+# The method behind Build With the Memory
 
 A working method from [Andrew Detwiler](https://andrewdetwiler.com).
 

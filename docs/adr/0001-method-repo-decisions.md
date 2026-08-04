@@ -22,6 +22,11 @@ It states the whole idea in three words: the repository remembers so the agent
 does not start from nothing.
 Alternatives it beat: a tool-style name (implies software you install, which this
 is not); a generic "AI memory" title (crowded, says nothing specific).
+*Amended 2026-08-04: renamed to "Build With the Memory" (owner call), and the
+site moved to buildwiththememory.com with the old domain redirecting there. The
+original reasoning above stands; only the article changed. All current surfaces
+carry the new name; published post titles keep whichever name was current when
+they went out.*
 
 **2. The lead wedge is decision-cache economics.**
 The sharpest, most defensible claim is that accumulated memory lowers the cost of

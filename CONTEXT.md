@@ -1,6 +1,6 @@
 # CONTEXT - glossary for this repo
 
-The terms that mean something specific in "Build With a Memory." One line each. Read this first so the words below carry their intended meaning everywhere else.
+The terms that mean something specific in "Build With the Memory." One line each. Read this first so the words below carry their intended meaning everywhere else.
 
 - **Memory network**: the committed markdown that holds a repo's context, decisions, and conventions, indexed by a map so an agent navigates instead of re-deriving.
 - **Wide network**: a personal, cross-project memory that lives outside any one repo and links to the repo networks by pointer. One home per fact, signposts elsewhere.

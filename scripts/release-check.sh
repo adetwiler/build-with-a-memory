@@ -112,7 +112,7 @@ if [ -d posts ] && [ -f feed.xml ]; then
     [ -e "$post" ] || continue
     case "$post" in */README.md) continue ;; esac
     slug="$(basename "$post" .md)"
-    if ! grep -q "<link>https://buildwithamemory.com/devlog/${slug}/</link>" feed.xml; then
+    if ! grep -q "<link>https://buildwiththememory.com/devlog/${slug}/</link>" feed.xml; then
       bad_feed_links="${bad_feed_links}
   - ${slug} has no /devlog/${slug}/ item link"
     fi

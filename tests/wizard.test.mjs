@@ -21,13 +21,13 @@ const PACKAGE_FILES = [
   'wizard/interview.md',
   'wizard/scaffold.md',
   'wizard/platforms.md',
-  'wizard/entries/from-buildwithamemory.md',
+  'wizard/entries/from-buildwiththememory.md',
   'scripts/validate-scaffold.mjs',
 ]
 
 // The direct-install surface: everything a person handed the repo will read.
 // Per ADR 0001 (one artifact, two exits) none of it may mention the
-// newsletter; only the buildwithamemory.com entry file may, and only after
+// newsletter; only the buildwiththememory.com entry file may, and only after
 // the wizard has finished.
 const DIRECT_SURFACE = ['START-HERE.md', 'wizard/interview.md', 'wizard/scaffold.md', 'wizard/platforms.md']
 
@@ -75,7 +75,7 @@ test('two exits: the direct-install surface never mentions the newsletter', () =
 })
 
 test('two exits: the BWAM entry appends the offer strictly after the wizard finishes', () => {
-  const body = read('wizard/entries/from-buildwithamemory.md')
+  const body = read('wizard/entries/from-buildwiththememory.md')
   assert.match(body, /After the wizard has finished/, 'offer is gated on completion')
   assert.match(body, /Never repeat the offer/, 'offer is once, ever')
   assert.match(body, /never gate anything on it/i, 'offer is not load-bearing')

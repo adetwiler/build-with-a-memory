@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>Build With a Memory</title>
-    <link>https://buildwithamemory.com</link>
+    <title>Build With the Memory</title>
+    <link>https://buildwiththememory.com</link>
     <description>A working developer&apos;s devlog on building with AI coding agents: committed markdown memory networks and a self-improving loop.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 29 Jul 2026 03:18:41 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 04 Aug 2026 23:13:44 GMT</lastBuildDate>
     <item>
       <title>The network knew why, but not what</title>
-      <link>https://buildwithamemory.com/devlog/2026-07-29-the-network-knew-why-but-not-what/</link>
-      <guid isPermaLink="true">https://buildwithamemory.com/devlog/2026-07-29-the-network-knew-why-but-not-what/</guid>
+      <link>https://buildwiththememory.com/devlog/2026-07-29-the-network-knew-why-but-not-what/</link>
+      <guid isPermaLink="true">https://buildwiththememory.com/devlog/2026-07-29-the-network-knew-why-but-not-what/</guid>
       <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
       <description>Pillar 14. A memory network records decisions well and current state badly, and the gap is where agents guess.</description>
     </item>
     <item>
       <title>A thirteenth pillar</title>
-      <link>https://buildwithamemory.com/devlog/2026-07-28-a-thirteenth-pillar/</link>
-      <guid isPermaLink="true">https://buildwithamemory.com/devlog/2026-07-28-a-thirteenth-pillar/</guid>
+      <link>https://buildwiththememory.com/devlog/2026-07-28-a-thirteenth-pillar/</link>
+      <guid isPermaLink="true">https://buildwiththememory.com/devlog/2026-07-28-a-thirteenth-pillar/</guid>
       <pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate>
       <description>Borrowed memory. Reading what other teams wrote down, without letting it start giving your agent orders.</description>
     </item>
     <item>
       <title>The repo is public</title>
-      <link>https://buildwithamemory.com/devlog/2026-07-17-the-repo-is-public/</link>
-      <guid isPermaLink="true">https://buildwithamemory.com/devlog/2026-07-17-the-repo-is-public/</guid>
+      <link>https://buildwiththememory.com/devlog/2026-07-17-the-repo-is-public/</link>
+      <guid isPermaLink="true">https://buildwiththememory.com/devlog/2026-07-17-the-repo-is-public/</guid>
       <pubDate>Fri, 17 Jul 2026 00:00:00 GMT</pubDate>
       <description>The repo was private while I wrote it. As of this week it isn&apos;t.</description>
     </item>
     <item>
       <title>Why this repo exists</title>
-      <link>https://buildwithamemory.com/devlog/2026-07-12-why-this-repo-exists/</link>
-      <guid isPermaLink="true">https://buildwithamemory.com/devlog/2026-07-12-why-this-repo-exists/</guid>
+      <link>https://buildwiththememory.com/devlog/2026-07-12-why-this-repo-exists/</link>
+      <guid isPermaLink="true">https://buildwiththememory.com/devlog/2026-07-12-why-this-repo-exists/</guid>
       <pubDate>Sun, 12 Jul 2026 00:00:00 GMT</pubDate>
       <description>Every AI session starts from nothing. This is the way of working that stopped me from losing the same context over and over.</description>
     </item>

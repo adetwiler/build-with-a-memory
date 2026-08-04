@@ -1,4 +1,4 @@
-# Build With a Memory
+# Build With the Memory
 
 A working method from [Andrew Detwiler](https://andrewdetwiler.com). This is how I actually build.
 
@@ -85,7 +85,7 @@ Start at [START-HERE.md](START-HERE.md).
 - **Layer 2: search, graph, and link health.** When the plain files outgrow grep, the [`tools/`](tools/) folder has the pieces I run on my own network, generalized: a hybrid local search index (SQLite FTS5 + local embeddings, fused by rank), an interactive link graph, and a link-health checker. Local-only, disposable, optional. Setup in [tools/README.md](tools/README.md).
 - **Borrowed memory.** You can point the index at other people's repos too, so your agent can search how other teams write their ADRs and agent manuals. That means retrieving text you did not write into the same context window as your real instructions, so it ships with a trust boundary: mirrors carry a trust level, arrive scanned, and read back as quotes rather than directives. The idea is [pillar 13](method/13-borrowed-memory.md); the tooling is in [tools/README.md](tools/README.md#borrowed-memory-indexing-other-peoples-repos).
 - **One command instead of a paste.** I am experimenting with a one-command setup; it will show up here if it works.
-- **Updates** live at [buildwithamemory.com](https://buildwithamemory.com). I also write about this as I go; the devlog is in [`posts/`](posts/) and subscribable by RSS (`feed.xml`).
+- **Updates** live at [buildwiththememory.com](https://buildwiththememory.com). I also write about this as I go; the devlog is in [`posts/`](posts/) and subscribable by RSS (`feed.xml`).
 
 ## License
 
