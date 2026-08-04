@@ -37,7 +37,7 @@ So after you write one, put the mistake back and confirm the check catches it. R
 
 Two ways a check passes while measuring nothing, both easy to hit:
 
-**The test that agrees with the bug.** A test written after the fact tends to be written against the code as it now stands, so it encodes the current behaviour rather than the intended one. One written here to catch a stale entry filtered words to those longer than four characters, which quietly dropped the four-letter words carrying all the meaning in that sentence. It passed against the exact bug it existed for. Nothing about a green run said so.
+**The test that agrees with the bug.** A test written after the fact tends to be written against the code as it now stands, so it encodes the current behavior rather than the intended one. One written here to catch a stale entry filtered words to those longer than four characters, which quietly dropped the four-letter words carrying all the meaning in that sentence. It passed against the exact bug it existed for. Nothing about a green run said so.
 
 **The rejection that means nothing.** Checking that a request without credentials is refused proves very little on its own, because a typo in the header name produces the identical refusal. You have then tested that your own mistake fails, not that the guard works. Always pair the negative case with a positive one: confirm a correct credential is accepted, or the negative result is unreadable.
 
