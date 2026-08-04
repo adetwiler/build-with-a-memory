@@ -14,6 +14,19 @@
 
 set -euo pipefail
 
+# THE FIRST COMMIT OF A REPO HAS NO HEAD, and `git diff --cached` is fatal without one.
+# Found 2026-08-04 adopting this kit into a fresh repo: `set -e` plus a 128 from the very
+# first diff meant the hook died before running a single check, and git reported nothing
+# useful, so the commit silently did not happen. A gate that cannot run on the commit that
+# creates the repo is a gate that is off for exactly the commit that imports everything.
+# Diffing against the empty tree makes the initial commit look like what it is: all adds.
+if git rev-parse --verify --quiet HEAD >/dev/null; then
+  DIFF_BASE=""
+else
+  DIFF_BASE="$(git hash-object -t tree /dev/null)"
+fi
+staged_diff() { git diff --cached ${DIFF_BASE:+"$DIFF_BASE"} "$@"; }
+
 # Emit every staged ADDED line as "path:newlineno: content".
 # -U0 means no context lines, so every non-header line in a hunk that starts with
 # '+' is an addition and advances the new-file line counter; '-' lines do not.
@@ -23,7 +36,7 @@ added_lines() {
   # in these files is a real leak, not the pattern matching itself. An earlier
   # version embedded the denylist here, which made the leak scanner ITSELF
   # the leak; an adversarial audit caught it. Do not regress this.
-  git diff --cached --unified=0 --no-color -- . | awk '
+  staged_diff --unified=0 --no-color -- . | awk '
     /^\+\+\+ / {
       file=$0
       sub(/^\+\+\+ b\//,"",file)
@@ -111,7 +124,14 @@ fi
 # prompt.txt. If this commit touches either, the STAGED copies must be
 # byte-identical. Compares staged content (git show :path), not the working
 # tree, so what is checked is exactly what would land.
-if git diff --cached --name-only | grep -qE '^(README\.md|prompt\.txt)$'; then
+#
+# THIS GATE IS REPO SPECIFIC and must no-op where the pair does not exist. This kit gets
+# copied into other public-bound repos, and most of them have a README and no prompt.txt.
+# Found 2026-08-04: `git show :prompt.txt` returns 128 there, `set -e` killed the hook
+# AFTER the earlier gates had already printed their findings, so the hook looked like it
+# worked and the commit still never happened. Presence of both staged blobs is the trigger.
+if git show :prompt.txt >/dev/null 2>&1 && git show :README.md >/dev/null 2>&1 \
+   && staged_diff --name-only | grep -qE '^(README\.md|prompt\.txt)$'; then
   staged_readme_prompt="$(git show :README.md 2>/dev/null | awk '/^```$/{if(inblk){exit}} /^```/{inblk=1;next} inblk{print}')"
   staged_prompt="$(git show :prompt.txt 2>/dev/null)"
   if [ "$staged_readme_prompt" != "$staged_prompt" ]; then
@@ -131,7 +151,7 @@ fi
 # lint is a machine-local tool; when it is absent the gate says so out loud
 # instead of silently passing.
 VOICE_LINT="${HOME}/.claude/scripts/voice-lint.mjs"
-staged_prose="$(git diff --cached --name-only --diff-filter=ACM -- 'posts/*.md' 'method/*.md' | grep -v '/README\.md$' || true)"
+staged_prose="$(staged_diff --name-only --diff-filter=ACM -- 'posts/*.md' 'method/*.md' | grep -v '/README\.md$' || true)"
 if [ -n "$staged_prose" ]; then
   if [ -f "$VOICE_LINT" ]; then
     # shellcheck disable=SC2086
