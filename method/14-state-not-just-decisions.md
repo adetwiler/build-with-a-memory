@@ -8,6 +8,10 @@ Then an agent asks a question about right now. What version are players actually
 
 The fix is one small file with different rules than everything else in your network: a `NOW.md`. It holds only what is true today. It gets **rewritten, never appended**. Every line is dated. Anything older than about two weeks is a bug, and gets deleted or demoted to the project's history file.
 
+If you have heard me call this **a personal state machine**, this file is the part I meant. The name sounds technical and the thing is not. A state machine means two things: there is a list of the states something can be in, and at any moment you can say which one it is in right now. Your project is in one state today. It is shipped, or it is half built, or it is waiting on somebody. `NOW.md` is where you write down which one, so nobody has to guess.
+
+Programmers may know the term from libraries that model how an application behaves. This is not that. Nothing here runs. It is a file you read.
+
 ## Why it works
 
 History and state have opposite lifecycles, and a file can only have one. Your decision records grow forever and that is correct; a decision from last year is still a decision. A state file that grows forever is just history with the wrong name, and an agent reading it cannot tell the current line from the stale one. Splitting them means every file has one honest rule: journals append, NOW replaces.
